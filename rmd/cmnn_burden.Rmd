@@ -17,7 +17,7 @@ data_cmnn2 <- data_cmnn %>%
 
 data_cmnn_ALBDZAASM <- data_cmnn2 %>% 
   filter(Entity %in% c("Albania", "Algeria", "American Samoa")) %>% 
-  select(Entity, DALY)
+  select(Entity, DALY, Year)
 
 # You should pivot the data to show each country in a separate column
 data_cmnn_ALBDZAASMpivot <- pivot_wider(data_cmnn_ALBDZAASM, names_from = Entity, values_from = DALY)
@@ -31,7 +31,6 @@ data_cmnn_ALBDZAASMpivot <- data_cmnn_ALBDZAASMpivot %>%
 
 # Use kable() from the knitr package to render the table.
 kable(data_cmnn_ALBDZAASMpivot, caption = "DALY burden over time for three countries")
-  
 ```
 
 ## Plot Showing Trends in CMNN Burden Over Time
@@ -39,11 +38,26 @@ kable(data_cmnn_ALBDZAASMpivot, caption = "DALY burden over time for three count
 ```{r}
 # Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
 
+library(ggplot2)
+library(tidyr)
 
+melted_data <- pivot_longer(data_cmnn_ALBDZAASMpivot, cols = -Year, names_to = "Country", values_to = "DALY")
+
+# Plot
+ggplot(melted_data, aes(x = Year, y = DALY, color = Country)) +
+  geom_line() +
+  labs(title = "DALY Burden Over Time",
+       x = "Year",
+       y = "DALY Burden") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Summary of CMNN Burden Findings
 
-Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
+Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences
 
+```{r}
+print("In Albania, Algeria and American Samoa, there is a notable downward trend in DALY burden. Notably, both Albania and Algeria demonstrated a similar rate of decrease, with a slight increase observed around 1999 in Albania. In contrast, American Samoa exhibited a slower decline in DALY burden over the same period.")
+```
 
