@@ -15,22 +15,22 @@ data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
 data_cmnn2 <- data_cmnn %>% 
   rename(DALY = `DALYs (Disability-Adjusted Life Years) - Communicable, maternal, neonatal, and nutritional diseases - Sex: Both - Age: Age-standardized (Rate)`)
 
-data_cmnn_ALBDZAASM <- data_cmnn2 %>% 
-  filter(Entity %in% c("Albania", "Algeria", "American Samoa")) %>% 
+data_cmnn_3 <- data_cmnn2 %>% 
+  filter(Entity %in% c("Switzerland", "Senegal", "Togo")) %>% 
   select(Entity, DALY, Year)
 
 # You should pivot the data to show each country in a separate column
-data_cmnn_ALBDZAASMpivot <- pivot_wider(data_cmnn_ALBDZAASM, names_from = Entity, values_from = DALY)
+data_cmnn_4 <- pivot_wider(data_cmnn_3, names_from = Entity, values_from = DALY)
 
 library(tidyr)
-data_cmnn_ALBDZAASMpivot <- unnest(data_cmnn_ALBDZAASMpivot)
+data_cmnn_5 <- unnest(data_cmnn_4)
 
 # Convert columns to numeric
-data_cmnn_ALBDZAASMpivot <- data_cmnn_ALBDZAASMpivot %>%
+data_cmnn_5 <- data_cmnn_5 %>%
   mutate(across(everything(), as.numeric))
 
 # Use kable() from the knitr package to render the table.
-kable(data_cmnn_ALBDZAASMpivot, caption = "DALY burden over time for three countries")
+kable(data_cmnn_5, caption = "DALY burden over time for Senegal-Germany-Togo")
 ```
 
 ## Plot Showing Trends in CMNN Burden Over Time
@@ -41,7 +41,7 @@ kable(data_cmnn_ALBDZAASMpivot, caption = "DALY burden over time for three count
 library(ggplot2)
 library(tidyr)
 
-melted_data <- pivot_longer(data_cmnn_ALBDZAASMpivot, cols = -Year, names_to = "Country", values_to = "DALY")
+melted_data <- pivot_longer(data_cmnn_5, cols = -Year, names_to = "Country", values_to = "DALY")
 
 # Plot
 ggplot(melted_data, aes(x = Year, y = DALY, color = Country)) +
@@ -58,6 +58,6 @@ ggplot(melted_data, aes(x = Year, y = DALY, color = Country)) +
 Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences
 
 ```{r}
-print("In Albania, Algeria and American Samoa, there is a notable downward trend in DALY burden. Notably, both Albania and Algeria demonstrated a similar rate of decrease, with a slight increase observed around 1999 in Albania. In contrast, American Samoa exhibited a slower decline in DALY burden over the same period.")
+print("In Senegal and Togo there is a notable downward trend in DALY burden, with a slight increase observed around 1999. In contrast, American Samoa exhibited a slower decline in DALY burden over the same period.")
 ```
 
