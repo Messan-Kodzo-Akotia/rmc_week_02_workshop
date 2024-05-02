@@ -58,6 +58,6 @@ ggplot(melted_data, aes(x = Year, y = DALY, color = Country)) +
 Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences
 
 ```{r}
-print("In Senegal and Togo there is a notable downward trend in DALY burden, with a slight increase observed around 1999. In contrast, American Samoa exhibited a slower decline in DALY burden over the same period.")
+print("In Senegal and Togo, a noticeable downward trend in the DALY burden was observed, with a slight increase observed around 1999. In Switzerland, on the other hand, the initially low DALY burden has been relatively stable, with a tendency to decline over time..")
 ```
 
